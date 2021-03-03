@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -55,6 +56,7 @@ class AnimalDetailActivity : AppCompatActivity() {
 @Composable
 fun AnimalDetail(animal: Animal?) {
     animal ?: return
+    val typography = MaterialTheme.typography
     Column {
         CoilImage(
             data = animal.thumbnail,
@@ -66,8 +68,9 @@ fun AnimalDetail(animal: Animal?) {
             }
         )
         Column(modifier = Modifier.padding(8.dp)) {
-            Text(text = animal.name)
-            Text(text = "Age ${animal.age}")
+            Text(text = animal.name, style = typography.h3)
+            Text(text = "Age: ${animal.age}", style = typography.body1)
+            Text(text = "Weight: ${animal.weight}kg", style = typography.body1)
         }
     }
 }
