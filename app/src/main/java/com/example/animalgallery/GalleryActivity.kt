@@ -5,6 +5,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -34,14 +35,18 @@ class GalleryActivity : AppCompatActivity() {
         setContent {
             AnimalGalleryTheme {
                 val animals: List<Animal> by galleryViewModel.animals.observeAsState(emptyList())
-                AnimalGallery(animals)
+                AnimalGallery(animals, ::showDetail)
             }
         }
+    }
+
+    private fun showDetail(animal: Animal) {
+        startActivity(AnimalDetailActivity.createIntent(this, animal))
     }
 }
 
 @Composable
-fun AnimalGallery(animals: List<Animal>) {
+fun AnimalGallery(animals: List<Animal>, onItemClick: (Animal) -> Unit) {
     LazyColumn(
         contentPadding = PaddingValues(8.dp)
     ) {
@@ -54,6 +59,7 @@ fun AnimalGallery(animals: List<Animal>) {
                         color = Color.Black,
                         shape = RoundedCornerShape(4.dp)
                     )
+                    .clickable(onClick = { onItemClick(animal) }),
             ) {
                 Column {
                     CoilImage(
@@ -82,6 +88,6 @@ fun DefaultPreview() {
     val animalRepository = AnimalRepository()
     val animals = animalRepository.getAll()
     AnimalGalleryTheme {
-        AnimalGallery(animals)
+        AnimalGallery(animals) { /* do nothing */ }
     }
 }
